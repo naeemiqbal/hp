@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>TODO supply a title</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <style>
+            .board {
+                border: solid red;
+            }
+
+            td {
+                border : solid green;
+                width: 50px;
+                height: 50px;
+                text-align: center;
+            }
+
+        </style>
+
+        <script type="text/javascript">
+
+            var p1t = true, board;
+
+            function init() {
+                writeBoard();
+            }
+
+
+            function writeBoard() {
+                var tab = '<table class="board" onclick="playedTurn(arguments);">',
+                        rows = document.getElementsByName("rows")[0].value,
+                        y, x, by = new Array(), bx;
+                for (y = 1; y <= rows; y++)
+                {
+                    tab += "<tr>";
+                    bx = new Array()
+                    for (x = 1; x <= rows; x++)
+                    {
+                        tab += "<td id='x" + x + "y" + y + " '</td>";
+                        bx.push("");
+                    }
+                    by.push(bx);
+                    tab += "</tr>";
+                }
+                tab += "</table>";
+                document.getElementById("eboard").innerHTML = tab;
+                board = by;
+            }
+
+            function playedTurn() {
+                var evt = arguments[0],
+                        itm = evt[0].target,
+                        id = itm.id,
+                        x = id[1] - 1,
+                        y = id[3] - 1;
+
+                if (board[y][x] === "") {
+                    if (p1t)
+                    {
+                        board[y][x] = "p1";
+                        itm.innerHTML = "X";
+                        document.getElementById("player").innerHTML = "Player 2";
+                    }
+                    else
+                    {
+                        board[y][x] = "p2";
+                        itm.innerHTML = "O";
+                        document.getElementById("player").innerHTML = "Player 1";
+                    }
+                    if (isGameOver())
+                    {
+                        document.getElementById("player").innerHTML = "LOSER IS  " +
+                                document.getElementById("player").innerHTML;
+                    }
+                    p1t = !p1t;
+                }
+            }
+            function isGameOver() {
+                var x, y, d, w,
+                        rows = document.getElementsByName("rows")[0].value;
+                /* Diagnol check, top left, right bottom */
+                x = 0;
+                y = 0;
+                w = board[y][x];
+                if (w !== "")
+                    for (d = 1; d < rows; d++)
+                    {
+                        if (w !== board[d][d])
+                            break;
+                    }
+                if (d == rows)
+                {
+                    return true;
+                }
+                /* Diagnol check, bottom left, right top */
+                x = 0;
+                y = rows - 1;
+                w = board[y][x];
+                if (w !== "")
+                    for (d = 1; d < rows; d++)
+                    {
+                        x++;
+                        y--;
+                        if (w !== board[y][x])
+                            break;
+                    }
+                if (d == rows)
+                {
+                    return true;
+                }
+                /* Vertical Check */
+                x = 0;
+                y = 0;
+                for (x = 0; x < rows ; x++)
+                {
+                    w = board[0][x];
+                    if (w !== "")
+                        for (d = 1; d < rows; d++)
+                        {
+                            if (w !== board[d][x])
+                                break;
+                            else if (d === rows-1 )
+                            {
+                                return true;
+                            }
+                        }
+                }
+                /* Horizontal Check */
+                x = 0;
+                y = 0;
+                for (y = 0; y < rows ; y++)
+                {
+                    w = board[y][0];
+                    if (w !== "")
+                        for (d = 1; d < rows; d++)
+                        {
+                            if (w !== board[y][d])
+                                break;
+                            else if (d === rows-1 )
+                            {
+                                return true;
+                            }
+                        }
+                }
+                
+            }
+        </script>
+    </head>
+    <body onload="init();">
+        <div>
+            The Yasir TicTacToe Game<br/>
+            Player 1<input type="text" name="player1" value="Yusra"/><br/>
+            Player 2 <input type="text" name="player2" value="Yasir"/><br/>
+            Rows<input type="number" name="rows" value='5' min="3" max="15"/><br/>
+            <input type="submit" onclick="writeBoard();" /><br/>
+            <h1 id="player">Player 1</h1>
+        </div>
+        <div id='eboard'></div>       
+    </body>
+</html>

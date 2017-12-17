@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Distance between 2 Point in meters</title>
+        <style>
+            body{
+                font-family: Arial;
+            }
+            input{
+                background-color: lime;
+                color: black;
+                text-align: right;
+                //    border: 2px;
+            }            
+            input[readonly=readonly] {
+                background-color: whitesmoke;
+                color: navy;
+                border: 0px;
+            }
+            button {
+                border: 1px solid navy;
+                background-color:lime;
+            }
+            .calc {
+                font-size: large;
+                padding: 5px;                
+                border: 5px solid navy;
+                margin: 25px;
+            }
+
+            #map_wrapper {
+
+                position: relative; 
+            }
+            .map-point {
+                width: 10px;
+                height: 10px;
+                border-radius: 4px;
+                background-color: #f00;
+                position: absolute; 
+            }            
+            .realtime-point {
+                width: 10px;
+                height: 10px;
+                border-radius: 4px;
+                background-color: #00f;
+                position: absolute; 
+            }             
+            .demo {
+                position: fixed;
+                bottom: 77px;                
+            }
+        </style>
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>        
+        <script src="locator.js"></script>                
+        <script1>
+            var lat, lng;
+            /** Converts numeric degrees to radians */
+            if (typeof (Number.prototype.toRad) === "undefined") {
+                Number.prototype.toRad = function () {
+                    return this * Math.PI / 180;
+                }
+            }
+
+            function getLocation() {
+                var x = document.getElementById("demo"), options;
+                if (navigator.geolocation) {
+                    options = {
+                        enableHighAccuracy: true,
+                        timeout: 5000,
+                        maximumAge: 0
+                    };
+                    navigator.geolocation.getCurrentPosition(showPosition, error, options);
+                    nav = navigator.geolocation.watchPosition(showPosition, error, options);
+                } else {
+                    x.innerHTML = "Geolocation is not supported by this browser.";
+                }
+            }
+
+            function showPosition(position) {
+                lat = position.coords.latitude;
+                lng = position.coords.longitude;
+                document.getElementById("currposx").value = lat;
+                document.getElementById("currposy").value = lng;
+                putImagePoint('realtime');
+            }
+            function error(err) {
+                console.warn('ERROR(' + err.code + '): ' + err.message);
+            }
+
+            function distance(lon1, lat1, lon2, lat2) {
+                var R = 6371; // Radius of the earth in km
+                var dLat = (lat2 - lat1).toRad();  // Javascript functions in radians
+                var dLon = (lon2 - lon1).toRad();
+                var a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                        Math.cos(lat1.toRad()) * Math.cos(lat2.toRad()) *
+                        Math.sin(dLon / 2) * Math.sin(dLon / 2);
+                var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+                var d = R * c * 1000; // Distance in meters
+                return d;
+            }
+
+            function getDistance() {
+                var ax = parseFloat(document.getElementById("ax").value),
+                        ay = parseFloat(document.getElementById("ay").value),
+                        bx = parseFloat(document.getElementById("bx").value),
+                        by = parseFloat(document.getElementById("by").value),
+                        cx = parseFloat(document.getElementById("cx").value),
+                        cy = parseFloat(document.getElementById("cy").value),
+                        dx = parseFloat(document.getElementById("dx").value),
+                        dy = parseFloat(document.getElementById("dy").value),
+                        ab, ad, cd, bc, xab, yab, angl, angl3;
+                ab = distance(ax, ay, bx, by);
+                xab = distance(ax, ay, bx, ay);
+                yab = distance(ax, ay, ax, by);
+                //                Angle	Cos^1 (ax-bx)/a-b
+                angl = Math.acos(xab / ab);
+                //H35/(PI()*2)*360
+                angl3 = (180 * angl) / (Math.PI);
+                document.getElementById("ab").value = ab;
+                document.getElementById("abf").value = ab * 3.28084;
+                ad = distance(ax, ay, dx, dy);
+                document.getElementById("ad").value = ad;
+                document.getElementById("adf").value = ad * 3.28084;
+                bc = distance(bx, by, cx, cy);
+                document.getElementById("bc").value = bc;
+                document.getElementById("bcf").value = bc * 3.28084;
+                cd = distance(dx, dy, cx, cy);
+                document.getElementById("cd").value = cd;
+                document.getElementById("cdf").value = cd * 3.28084;
+                document.getElementById("xangle").value = angl;
+                document.getElementById("xangled").value = angl3;
+            }
+
+            function putImagePoint(point) {
+                var ax = parseFloat(document.getElementById("ax").value),
+                        ay = parseFloat(document.getElementById("ay").value),
+                        bx = parseFloat(document.getElementById("posx").value),
+                        by = parseFloat(document.getElementById("posy").value),
+                        ab, xab, angl, angl3, newangl, rotx, roty, iposx, iposy,
+                        map = $('#map_wrapper'),
+                        img = $('img'),
+                        point,
+                        iw = img.width(),
+                        ih = img.height();
+
+                ab = distance(ax, ay, bx, by);
+                xab = distance(ax, ay, bx, ay);
+                //                Angle	Cos^1 (ax-bx)/a-b
+                
+                if (ab === 0)
+                    angl = Math.PI /2;
+                else                
+                    angl = Math.acos(xab / ab);
+                //H35/(PI()*2)*360
+                angl3 = (180 * angl) / (Math.PI);
+                newangl = angl - document.getElementById("xangle").value;
+                rotx = ab * Math.cos(newangl);
+                roty = ab * Math.sin(newangl);
+                document.getElementById("imga").value = angl;
+                document.getElementById("imgad").value = angl3;
+                document.getElementById("nimga").value = newangl;
+                document.getElementById("nimgad").value = newangl * 180 / Math.PI;
+                document.getElementById("nposx").value = rotx;
+                document.getElementById("nposy").value = roty;
+                iposx = rotx / document.getElementById("ab").value * iw;
+                iposy = ih - (roty / document.getElementById("ad").value * ih);
+                document.getElementById("iposx").value = iposx;
+                document.getElementById("iposy").value = iposy;
+                if ((point && point === 'realtime'))
+                {
+                    point = $('<div class="realtime-point"></div>');
+                    $('.realtime-point').remove();
+                    point.css({
+                        left: iposx + "px",
+                        top: iposy + "px"
+                    });
+                    point.appendTo(map);
+                } else
+                {
+                    point = $('<div class="map-point"></div>');
+                    $('.map-point').remove();
+                    point.css({
+                        left: iposx + "px",
+                        top: iposy + "px"
+                    });
+                    /*                point.fadeOut(500);
+                     //    point.fadeIn(500);*/
+                    point.appendTo(map);
+                }
+            }
+
+            function recordLocation(p1) {
+                getLocation();
+                document.getElementById(p1 + "x").value = lat;
+                document.getElementById(p1 + "y").value = lng;
+            }
+
+        </script1>
+    </head>
+    <body onload="getLocation();">
+        <table>
+            <tr>
+                <td>Point A: Latitude</td>
+                <td><input type="number"  id="ax" value="34.880747" /></td>
+                <td>Longitude<input type="number"  id="ay" value="-82.386814"/>
+                    <button onclick="recordLocation('a')">Record</button></td>
+            </tr>
+            <tr>
+                <td>Point B: Latitude</td>
+                <td><input type="number"  id="bx" value="34.880834" /></td>
+                <td>   Longitude<input type="number"  id="by" value="-82.386735"/>
+                    <button onclick="recordLocation('b')">Record</button></td>
+            </tr>
+            <tr>
+                <td>Point C: Latitude</td>
+                <td><input type="number"  id="cx" value="34.880934" /></td>
+                <td>   Longitude<input type="number"  id="cy" value="-82.386876"/>            
+                    <button onclick="recordLocation('c')">Record</button></td>
+            </tr>
+            <tr>
+                <td>Point D: Latitude</td>
+                <td><input type="number"  id="dx" value="34.880846" /> </td>
+                <td>  Longitude<input type="number"  id="dy" value="-82.38696"/>            
+                    <button onclick="recordLocation('d')">Record</button></td>
+            </tr>
+            <tr>
+                <td>Image size: X</td>
+                <td><input type="number"  id="iw" value="790" /></td>
+                <td>Y<input type="number"  id="ih" value="1190"/></td>
+            </tr>
+            <tr>
+                <td><button class="calc" onclick="getDistance();">Calculate</button>     </td>
+            </tr>
+            <tr>
+                <td>                    Distance horizontal                </td>
+            </tr>
+            <tr>
+                <td>  AB:</td>
+                <td><input type="number"  id="ab" readonly="readonly"/>M            </td>
+                <td><input type="number"  id="abf" readonly="readonly"/>Feet            </td>
+            </tr>
+            <tr>
+                <td>CD:</td>
+                <td><input type="number"  id="cd" readonly="readonly"/>M </td><td><input type="number"  id="cdf" readonly="readonly"/>Feet</td>
+            </tr>
+            <tr>
+                <td>Distance vertical<br/>
+                </td>
+            </tr>
+            <tr>
+                <td>AD:</td>
+                <td> <input type="number"  id="ad" readonly="readonly"/>M </td>
+                <td><input type="number"  id="adf" readonly="readonly"/>Feet</td>
+            </tr>
+            <tr>
+                <td>BC:</td>
+                <td> <input type="number"  id="bc" readonly="readonly"/>M </td>
+                <td><input type="number"  id="bcf" readonly="readonly"/>Feet</td>
+            </tr>
+            <tr>
+                <td>  Rotation angle X:</td>
+                <td><input type="number"  id="xangle" readonly="readonly" />rad</td>
+                <td><input type="number"  id="xangled" readonly="readonly" />°</td>
+            </tr>
+            <tr>
+                <td>Enter point on Map</td>
+            </tr>
+            <tr>
+                <td>Latitude</td>
+                <td><input type="number"  id="posx" value="34.880851" />   Longitude</td>
+                <td><input type="number"  id="posy" value="-82.3868233"/>
+                    <button onclick="recordLocation('posx')">Record</button></td>
+            </tr>
+            <tr>
+                <td><button  class="calc" onclick="putImagePoint();">Locate Point</button></td>
+            </tr>
+            <tr>
+                <td> Angle</td>
+                <td><input type="number"  id="imga" readonly="readonly"/>rad</td>
+                <td>       <input type="number"  id="imgad" readonly="readonly"/>°</td>
+            </tr>
+            <tr>
+                <td>Normalized Angle</td>
+                <td><input type="number"  id="nimga" readonly="readonly"/>rad</td>
+                <td> <input type="number"  id="nimgad" readonly="readonly"/>°</td>
+            </tr>
+            <tr>
+                <td>Normalized Position</td>
+                <td><input type="number"  id="nposx" readonly="readonly"/>rad</td>
+                <td> <input type="number"  id="nposy" readonly="readonly"/>°</td>
+            </tr>
+            <tr>
+                <td>Position on Image</td>
+                <td><input type="number"  id="iposx" readonly="readonly"/>pix</td>
+                <td> <input type="number"  id="iposy" readonly="readonly"/>pix</td>
+            </tr>
+            <tr>
+                <td>Latitude</td>
+                <td><input type="number"  id="currposx" readonly="readonly" />Longitude</td>
+                <td><input type="number"  id="currposy" readonly="readonly" /></td>
+            </tr>            
+        </table>
+
+        <div id="map_wrapper">        
+            <img src="Home2.png"/>
+
+        </div>
+        <div id="demo" ></div>        
+    </body>
+</html>

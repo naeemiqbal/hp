@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Distance between 2 Point in meters</title>
+        <style>
+            body{
+                font-family: Arial;
+            }
+            input{
+                background-color: lime;
+                color: black;
+                text-align: right;
+                //    border: 2px;
+            }            
+            input[readonly=readonly] {
+                background-color: whitesmoke;
+                color: navy;
+                border: 0px;
+            }
+            button {
+                border: 1px solid navy;
+                background-color:lime;
+            }
+            .calc {
+                font-size: large;
+                padding: 5px;                
+                border: 5px solid navy;
+                margin: 25px;
+            }
+
+            #map_wrapper {
+
+                position: relative; 
+            }
+            .map-point {
+                width: 10px;
+                height: 10px;
+                border-radius: 4px;
+                background-color: #f00;
+                position: absolute; 
+                background-image: URL(A-icon-locator.png);
+            }            
+            .realtime-point {
+                width: 10px;
+                height: 10px;
+                border-radius: 4px;
+                background-color: #00f;
+                position: absolute; 
+            }             
+            .demo {
+                position: fixed;
+                bottom: 77px;                
+            }
+            #debugdata{
+                display:none;
+            }
+        </style>
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>        
+        <script src="locator.js"></script>
+    </head>
+    <body onload="init();">
+        <div id="debugdata" >
+            <table>
+                <tr>
+                    <td>Point A: Latitude</td>
+                    <td><input type="number"  id="ay" value="34.8805671" />Y</td>
+                    <td>Longitude<input type="number"  id="ax" value="-82.3869187"/>X
+                        <button onclick="recordLocation('a')">Record</button></td>
+                </tr>
+                <tr>
+                    <td>Point B: Latitude</td>
+                    <td><input type="number"  id="by" value="34.8806569" />Y</td>
+                    <td>   Longitude<input type="number"  id="bx" value="-82.3869074"/>X
+                        <button onclick="recordLocation('b')">Record</button></td>
+                </tr>
+                <tr>
+                    <td>Point C: Latitude</td>
+                    <td><input type="number"  id="cy" value="34.8806997" />Y</td>
+                    <td>   Longitude<input type="number"  id="cx" value="-82.3871042"/>X            
+                        <button onclick="recordLocation('c')">Record</button></td>
+                </tr>
+                <tr>
+                    <td>Point D: Latitude</td>
+                    <td><input type="number"  id="dy" value="34.8806888" />Y</td>
+                    <td>  Longitude<input type="number"  id="dx" value="-82.3871208"/>X            
+                        <button onclick="recordLocation('d')">Record</button></td>
+                </tr>
+                <tr>
+                    <td>Image size: X</td>
+                    <td><input type="number"  id="iw" value="790" /></td>
+                    <td>Y<input type="number"  id="ih" value="1190"/></td>
+                </tr>
+                <tr>
+                    <td><button class="calc" onclick="getDistance();">Calculate</button>     </td>
+                </tr>
+                <tr>
+                    <td>                    Distance horizontal                </td>
+                </tr>
+                <tr>
+                    <td>  AB:</td>
+                    <td><input type="number"  id="ab" readonly="readonly"/>M            </td>
+                    <td><input type="number"  id="abf" readonly="readonly"/>Feet            </td>
+                </tr>
+                <tr>
+                    <td>CD:</td>
+                    <td><input type="number"  id="cd" readonly="readonly"/>M </td><td><input type="number"  id="cdf" readonly="readonly"/>Feet</td>
+                </tr>
+                <tr>
+                    <td>Distance vertical<br/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>AD:</td>
+                    <td> <input type="number"  id="ad" readonly="readonly"/>M </td>
+                    <td><input type="number"  id="adf" readonly="readonly"/>Feet</td>
+                </tr>
+                <tr>
+                    <td>BC:</td>
+                    <td> <input type="number"  id="bc" readonly="readonly"/>M </td>
+                    <td><input type="number"  id="bcf" readonly="readonly"/>Feet</td>
+                </tr>
+                <tr>
+                    <td>  Rotation angle X:</td>
+                    <td><input type="number"  id="xangle" readonly="readonly" />rad</td>
+                    <td><input type="number"  id="xangled" readonly="readonly" />°</td>
+                </tr>
+                <tr>
+                    <td>Enter point on Map</td>
+                </tr>
+                <tr>
+                    <td>Latitude</td>
+                    <td><input type="number"  id="posy" value="34.880937" />   Longitude</td>
+                    <td><input type="number"  id="posx" value="-82.386865"/>
+                        <button onclick="recordLocation('posx')">Record</button></td>
+                </tr>
+                <tr>
+                    <td><button  class="calc" onclick="putImagePoint();">Locate Point</button></td>
+                </tr>
+                <tr>
+                    <td> Angle</td>
+                    <td><input type="number"  id="imga" readonly="readonly"/>rad</td>
+                    <td>       <input type="number"  id="imgad" readonly="readonly"/>°</td>
+                </tr>
+                <tr>
+                    <td>Normalized Angle</td>
+                    <td><input type="number"  id="nimga" readonly="readonly"/>rad</td>
+                    <td> <input type="number"  id="nimgad" readonly="readonly"/>°</td>
+                </tr>
+                <tr>
+                    <td>Normalized Position</td>
+                    <td><input type="number"  id="nposy" readonly="readonly"/>rad</td>
+                    <td> <input type="number"  id="nposx" readonly="readonly"/>°</td>
+                </tr>
+                <tr>
+                    <td>Position on Image</td>
+                    <td><input type="number"  id="iposy" readonly="readonly"/>Y pix</td>
+                    <td> <input type="number"  id="iposx" readonly="readonly"/>X pix</td>
+                </tr>
+                <tr>
+                    <td>Latitude</td>
+                    <td><input type="number"  id="currposy" readonly="readonly" />Longitude</td>
+                    <td><input type="number"  id="currposx" readonly="readonly" /></td>
+                </tr>            
+            </table>
+        </div>
+
+        <div id="map_wrapper">        
+            <img id="myLocation"  src="Home2.png"/>
+        </div>
+        <div id="demo" ></div>        
+    </body>
+</html>

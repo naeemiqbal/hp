@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>Naeem Iqbal (naeemiqbal.com)</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script  src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="       crossorigin="anonymous"></script>
+        <style>
+            .topmenu{
+                background-color: gray;// #663300;
+                color: white;
+                
+                height: 50px;
+               /* text-align: center;
+                text-orientation: vertical-right;
+                vertical-align: middle;*/
+                font-size: xx-large;
+                font-weight: bolder;
+                position: fixed;
+            }
+            #topmenu li {
+                float: left;
+                display: block;
+                width: 160px;
+                margin: 10px;
+                padding: 10px;
+                border : 2px;
+            }                
+
+            body{
+                //     background-image: url("Sand.jpg");
+                font-family : Arial;
+                position : fixed;
+            }
+            #nonmenu{
+                height : 90%;
+                background-color: sand;
+                vertical-align: bottom;
+            }
+            iframe{
+                border: none;
+                width:  max-content;
+            }
+            ul {
+                list-style-type:   none;
+                overflow: hidden;
+                background-color: gray;// #663300;
+                color: white;
+            }
+
+            #floatmenu{
+                width : 200px;
+                left: 300px;
+                position : absolute;
+            }
+            .vertlist{
+                font-size: medium;
+                color:  beige;
+
+            }
+            .vertlist li:hover {background: red;}
+            
+            li:hover {background: whitesmoke;
+                      color : black;
+                      font-weight: bold; }
+
+        </style>
+        <script>
+
+            function MenuItem(url, name) {
+                this.url = url;
+                this.name = name;
+                this.getHTML = function () {
+                    //return "<li class='vertlist' url=\"" + this.url + "\" >" + this.name + "</li>";
+                    return "<li class='vertlist' url=\"" + this.url + "\" onclick='loadPage2(\"" + this.url + "\");' >" + this.name + "</li>";
+                }
+            }
+
+            function VerticalMenu(name, items) {
+                this.name = name;
+                this.items = items;
+                this.getHTML = function () {
+                    var ret = "<ul>" + this.name;
+                    if (this.items)
+                        this.items.forEach(function (item) {
+                            ret += item.getHTML();
+                        });
+                    ret += "</ul>";
+                    return ret;
+                }
+            }
+
+            var mainMenu = [],
+                    vmenu = [];
+            vmenu.push(new MenuItem('../2JerseyRest/', "Grid Form Jersey Restful"));
+            vmenu.push(new MenuItem('TicTacToe.html', "TicTacToe"));
+            vmenu.push(new MenuItem('TicTacToe.html', "TicTacToe2"));
+            vmenu.push(new MenuItem('TicTacToe.html', "TicTacToe4"));
+            mainMenu.push(new VerticalMenu("Lab 321", vmenu));
+            vmenu = [];
+            vmenu.push(new MenuItem('Auth1/', "Tomcat Realm"));
+            vmenu.push(new MenuItem('OAuth2v1/', "SSO using OAuth2 Google API"));
+            mainMenu.push(new VerticalMenu("Lab 123", vmenu));
+
+            function loadMenu() {
+                var fmenu = $("#floatmenu")[0],
+                        itm = this, li, x, y, iid, menustr = "";
+
+                if (itm.target instanceof HTMLLIElement || itm.tagName === "LI")
+                {
+                    li = itm.target;
+                    iid = parseInt(itm.id.substring(2)) - 1;
+                    x = itm.offsetLeft;
+                    y = itm.offsetHeight + 30;
+                    menus = mainMenu[iid].items;
+                    fmenu.style.marginTop = y + "px";
+                    fmenu.style.marginLeft = x + "px";
+                    if (menus)
+                        menus.forEach(function (innermenu) {
+                            menustr += innermenu.getHTML();
+                        });
+                    fmenu.innerHTML = "<ul>" + menustr + "</ul>";
+                    fmenu.hidden = "";
+                    $("li.vertlist").on("click", this.loadPage);
+                    $("li.vertlist").on("mouseover", this.loadPage);
+                    $("li").on("mouseover", this.loadPage);
+                }
+            }
+
+            function loadPage() {
+                var frame = $("iframe1");
+                alert("load page");
+                frame.src = this.url;
+            }
+            function loadPage2(url) {
+                $("#iframe1")[0].src = url;
+            }
+
+
+
+            window.onload = function () {
+                /*  var str = "";
+                 if (mainMenu)
+                 mainMenu.forEach(function (item) {
+                 str += "<li>" + item.name + "</li>";
+                 });
+                 $("#topmnenu")[0].innerHTML = str;*/
+                $("li").on("mouseover", this.loadMenu);
+            };
+        </script>        
+    </head>
+    <body>
+        <div class="topmenu">Naeem Iqbal
+            <ul id="topmenu" >
+                <li id="tm1" >Lab 123</li>
+                <li id="tm2" >Tutorials</li>
+                <li id="tm3" >333 </li>
+                <li id="tm4" >About</li>
+            </ul>
+        </div>        
+        <iframe class="nonmenu" id="iframe1" >
+        </iframe>
+        <div id="floatmenu" >
+            <P>
+                The Story goes here. 
+            </P>
+        </div>
+        
+    </body>
+</html>

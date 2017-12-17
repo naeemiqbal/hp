@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Distance between 2 Point in meters</title>
+        <style>
+            body{
+                font-family: Arial;
+            }
+            #map_wrapper {
+
+                position: relative; 
+            }
+            .map-point {
+                width: 10px;
+                height: 10px;
+                border-radius: 4px;
+                background-color: #f00;
+                position: absolute; 
+            }            
+            .realtime-point {
+                width: 10px;
+                height: 10px;
+                border-radius: 4px;
+                background-color: #00f;
+                position: absolute; 
+            }             
+            .demo {
+                position: fixed;
+                bottom: 77px;                
+            }
+              #debugdata{
+                display:none;
+            }
+        </style>
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>        
+        <script src="locator0.js">  </script>
+    </head>
+    <body onload="init();">
+        <div id="map_wrapper">        
+            <img id="myLocation"  src="Makkahgps.jpg"/>
+        </div>
+        <div id="demo" ></div>        
+    </body>
+</html>
