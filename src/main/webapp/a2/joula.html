@@ -1,10 +1,20 @@
 <!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
 <html>
     <head>
+        <title>My Joula local </title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+        <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>    
         <script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyAq6Wuc8Jd1o4DejQxAFqBE6y3KN54F_pc"></script>         
-
         <script>
-            var myPos = {lat: null, lng: null};
+            var myPos = {lat: null, lng: null},
+                    map;
             function initialize2() {
                 navigator.geolocation.getCurrentPosition(savePosition);
             }
@@ -14,9 +24,7 @@
                 initialize();
             }
 
-
-            function initialize()
-            {
+            function initialize(){
                 var myCenter = new google.maps.LatLng(myPos.lat, myPos.lng),
                         h = window.screen.availHeight,
                         w = window.screen.availWidth, mapHW,
@@ -28,8 +36,8 @@
                     mapHW = h;
 
                 mapCss = "width:" + mapHW + "px;height:" + mapHW + "px";
-                mapDiv.style.width = w *.97 + "px";                
-                mapDiv.style.height = (mapHW*.9 - 40) + "px";                
+                mapDiv.style.width = w * .97 + "px";
+                mapDiv.style.height = (mapHW * .9 - 40) + "px";
 
                 var mapProp = {
                     center: myCenter,
@@ -37,7 +45,7 @@
                     mapTypeId: google.maps.MapTypeId.ROADMAP
                 };
 
-                var map = new google.maps.Map(mapDiv, mapProp);
+                map = new google.maps.Map(mapDiv, mapProp);
                 google.maps.event.trigger(map, "resize");
                 var marker = new google.maps.Marker({
                     position: myCenter,
@@ -47,6 +55,24 @@
             }
 
             google.maps.event.addDomListener(window, 'load', initialize2);
+
+            $(function () {
+                initialize2();
+                $.ajax({url: "data.json", success: loadData});
+            });
+
+            function loadData(resp) {
+                var data = resp;
+                if (Array.isArray(data.previewData)) {
+                    data.previewData.forEach(function (element) {
+                        var marker = new google.maps.Marker({
+                            position: new google.maps.LatLng(element.Latitude, element.Longitude),
+                            title: element.Name + " \n" + element.AddressLine
+                        });
+                        marker.setMap(map);
+                    });
+                }
+            }
         </script>
         <style>
             div.googleMap{
@@ -63,15 +89,14 @@
                 width: 100%;   
                 height: 30px;
             }
-
         </style>
-
     </head>
-
     <body>
         <div id="googleMap"></div>
         <div id="mapControls" >
             <button type="button" title="Refresh2"  onclick="initialize2();">Refresh</button>
         </div>        
+        <div id="rslt">            
+        </div>
     </body>
 </html>

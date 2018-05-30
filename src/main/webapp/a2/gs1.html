@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>TODO supply a title</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+        <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>    
+        <script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyAq6Wuc8Jd1o4DejQxAFqBE6y3KN54F_pc"></script>         
+        <script>
+            $(function () {
+                
+                
+
+var url = "https://spreadsheets.google.com/feeds/cells/0AmHYWnFLY1F-dG1oTHQ5SS1uUzhvTnZTSHNzMjdDaVE/od6/public/values?alt=json-in-script&callback=?";
+$.getJSON(url,{}, function (d) { console.log(d);
+  $("#cntnt").innerHTML = d.feed.entry[0];});              });
+//https://docs.google.com/spreadsheets/d/1F6iH6_kvn0CoK5h63tMhlNMH79mG9rLM-n2_uuPx8Kg/edit#gid=0            
+url = "https://spreadsheets.google.com/feeds/cells/1F6iH6_kvn0CoK5h63tMhlNMH79mG9rLM-n2_uuPx8Kg/od6/public/values?alt=json-in-script&callback=?";
+$.getJSON(url,{}, function (d) { console.log(d);
+  $("#cntnt").innerHTML = d.feed.entry[0];});
+            
+        </script>
+    </head>
+    <body>
+        <div>TODO write content</div>
+        <div id="cntnt" >
+        </div>
+    </body>
+</html>

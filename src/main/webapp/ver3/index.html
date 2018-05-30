@@ -1,22 +1,51 @@
-<!DOCTYPE html>
-<!--
-To change this license header, choose License Headers in Project Properties.
-To change this template file, choose Tools | Templates
-and open the template in the editor.
--->
-<html>
+<!doctype html>
+<html lang="en">
     <head>
-        <title>Temp new page</title>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Naeem Iqbal dot com</title>
+        <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+        <link rel="stylesheet" href="/resources/demos/style.css">
+        <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+        <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+        <script>
+            $(function () {
+                $("#menu").menu();
+            });
+        </script>
+        <style>
+            .ui-menu { width: 350px; }
+            li{ width: 250px;}
+        </style>
     </head>
     <body>
-        <div>
-            <a href="../audio/index.html"> Audio</a>
-            <video width="960" height="720" autoplay>
-                <source src="../audio/MeraDilBadalDai.mp4" type="video/mp4">
-                Your browser does not support the video tag.
-            </video> 
-        </div>
-    </body>
+    <li menu="haramain"  menuitems="'https://play.google.com/store/apps/details?id=com.naeemiqbal', Android App , 'mh/index.html', Web Prototype,'LocatorA1.html?location=home', Locator Home,'LocatorA1.html?location=masjid', Locator Masjid, 'LocatorA1.html?location=makkah', Locator Haram,'Makkah.jpg', Guidemap Makkah">My Haramain</li>
+
+    <ul id="menu"  >
+        <li><div>Geolocation</div>
+            <ul>
+                <li><a href='Navigator.html'/>Current Location Coordinates</li>
+                <li><a href='Movement.html' />Record Movement</li>
+                <li><a href='NavMap.html'/>Location on Google Map</li>
+                <li><a href='Distance0.html'/>Calculate Distance</li>
+                <li><a href='TicTacToe.html' />TicTacToe</li>   
+            </ul>
+        </li>
+        <li><div>Resources</div>
+        <ul
+        
+        </li>
+        <li><div>About</div>
+            <ul>
+                <li><a href='https://careers.stackoverflow.com/cv/edit/245592?verified=False'/>Stack Overflow</li>
+                <li><a href='https://github.com/naeemiqbal'/>Git Hub</li>
+                <li><a href='https://www.linkedin.com/in/naeemiqbal'/> Linked In</li>
+                <li><a href='https://www.blogger.com/profile/10382896966914424171'/>Blogger</li>
+                <li><a href='../static/NaeemIqbal.doc' />Resume</li>                                                            
+            </ul>
+        </li>
+        <li class="ui-state-disabled"><div>Specials (n/a)</div></li>
+    </ul>
+
+</body>
 </html>
