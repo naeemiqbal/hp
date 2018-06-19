@@ -7,7 +7,7 @@
         <style>     
             body{
                 height: 100%;
-//                background-image: url("Sand.jpg");
+                //                background-image: url("Sand.jpg");
                 font-family : Arial;
             }        
             .menu{
@@ -62,9 +62,9 @@
                 color : initial;
                 font-weight: normal; }
             </style>   
-            
-        <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-        <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>    
+
+            <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+            <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>    
 
             <script type="text/javascript">
                 var menuon = new Date(), mainmenuon = false;
@@ -141,20 +141,20 @@
                         ifram.hidden = "hidden";
                     }
                 }
-  $( "#myself" ).animate({
-    opacity: 0.25,
-    left: "+=50",
-    height: "toggle"
-  }, 5000, function() {
-    // Animation complete.
-  });
+                $("#myself").animate({
+                    opacity: 0.25,
+                    left: "+=50",
+                    height: "toggle"
+                }, 5000, function () {
+                    // Animation complete.
+                });
 
- $("img").animate({left: '250px'});
-   $("#main1").animate({
-        left: '250px',
-        height: '+=150px',
-        width: '+=150px'
-    });
+                $("img").animate({left: '250px'});
+                $("#main1").animate({
+                    left: '250px',
+                    height: '+=150px',
+                    width: '+=150px'
+                });
             </script>
         </head>  
         <body>
@@ -164,14 +164,11 @@
                 <h1 onclick="toggleIframe();" style="text-align:center">Naeem Iqbal</h1>                        
                 <ul name="nmi1" id="menulist" onmouseover="showMenu(arguments);" onmouseout="mainmenuon = false; window.setTimeout(hideMenu, 5000);">
                     <li menu="about"     menuitems="'about.html',this.site(), https://careers.stackoverflow.com/cv/edit/245592?verified=False','Stack Overflow' ,'https://github.com/naeemiqbal','Git Hub','https://www.linkedin.com/in/naeemiqbal','Linked In','https://www.blogger.com/profile/10382896966914424171','Blogger','static/NaeemIqbal.doc','Resume'" >About</li>                                        
-                    <!--                    <li menu="resources" menuitems="'http://www.mkyong.com', Java {Mkyong}, 'http://vogella.com/', Java {Vogella}, 'https://alextheedom.wordpress.com/cloud/amazon-free-usage-tier-installing-tomcat-7-on-an-ec2-linux-instance', AWS First WAR app">Resources</li>
-                                        <li menu="sample"    menuitems="'../2JerseyRest/', Grid Form Jersey Restful,'TicTacToe.html',TicTacToe">Sample Applications</li>
+                    <!--      <li menu="sample"    menuitems="'../2JerseyRest/', Grid Form Jersey Restful,'TicTacToe.html',TicTacToe">Sample Applications</li>
                                         <li menu="secure"    menuitems="'Auth1/', Tomcat Realm, 'OAuth2v1/',SSO using OAuth2 Google API" >Secure Pages</li>-->
                     <li menu="geolocation"  menuitems="'Navigator.html', My Coordinates, 'Movement.html', Movement,'NavMap.html',Location on Map, 'Distance0.html',Coordinate Distance, 'TicTacToe.html',TicTacToe">Geolocation</li>                    
-                    <li menu="resources"  menuitems="'sqlFormatter.html', SQL Beautifier, 'TicTacToe.html',TicTacToe">Resoures</li>                    
-                    <li menu="haramain"  menuitems="'https://play.google.com/store/apps/details?id=com.naeemiqbal',My Haramain, 'mh/index.html', Web Prototype">Resources</li>
+                    <li menu="haramain"  menuitems="'https://play.google.com/store/apps/details?id=com.naeemiqbal',My Haramain, 'mh/index.html', Web Prototype,'sqlFormatter.html', SQL Beautifier, 'TicTacToe.html',TicTacToe">Resources</li>
                     <li menu="favorites" menuitems="'audio/index.html',Audios,'audio/MeraDilBadalDai.mp4',Dil badal de">Favorites</li>
-
                 </ul> 
             </div>            
         </section>
@@ -184,8 +181,8 @@
                 }
             </div>
         </section>
-                <div id="momenu" class="momenu" hidden="hidden" onmouseover="menuon = true;" onmouseout="menuon = false;
-                    window.setTimeout(hideMenu, 3000);"> hidden MENU</div>
-            
+        <div id="momenu" class="momenu" hidden="hidden" onmouseover="menuon = true;" onmouseout="menuon = false;
+                        window.setTimeout(hideMenu, 3000);"> hidden MENU</div>
+
     </body>
 </html>
