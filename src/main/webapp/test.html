@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <script>
+                         var div = $('div');
+            $(document).ready(function () {
+                                         var div2 = $('div'),
+                                         
+             cls =   function(){
+                div.slideUp(5000, opn);
+            },
+            opn =  function(){
+                div.slideDown(15000, cls);
+            };
+                /*$('div').slideUp(5000, function () {
+                    div.slideDown(15000);
+                });*/
+        //div.slideUp("slow", opn);
+        div2.slideUp("slow",opn);
+        div2.slideDown("slow", cls);
+        
+
+            });
+            
+
+
+        </script>
+    </head>
+    <body>
+        <div > <img src="NaeemIqbal.JPG" /></div>
+
+        <div id="box2" style="background-image: url('NaeemIqbal.JPG');margin:6px;"></div>
+
+    </body>
+</html>

@@ -62,6 +62,10 @@
                 color : initial;
                 font-weight: normal; }
             </style>   
+            
+        <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+        <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>    
+
             <script type="text/javascript">
                 var menuon = new Date(), mainmenuon = false;
                 menuon = false;
@@ -137,8 +141,20 @@
                         ifram.hidden = "hidden";
                     }
                 }
+  $( "#myself" ).animate({
+    opacity: 0.25,
+    left: "+=50",
+    height: "toggle"
+  }, 5000, function() {
+    // Animation complete.
+  });
 
-
+ $("img").animate({left: '250px'});
+   $("#main1").animate({
+        left: '250px',
+        height: '+=150px',
+        width: '+=150px'
+    });
             </script>
         </head>  
         <body>
@@ -152,6 +168,7 @@
                                         <li menu="sample"    menuitems="'../2JerseyRest/', Grid Form Jersey Restful,'TicTacToe.html',TicTacToe">Sample Applications</li>
                                         <li menu="secure"    menuitems="'Auth1/', Tomcat Realm, 'OAuth2v1/',SSO using OAuth2 Google API" >Secure Pages</li>-->
                     <li menu="geolocation"  menuitems="'Navigator.html', My Coordinates, 'Movement.html', Movement,'NavMap.html',Location on Map, 'Distance0.html',Coordinate Distance, 'TicTacToe.html',TicTacToe">Geolocation</li>                    
+                    <li menu="resources"  menuitems="'sqlFormatter.html', SQL Beautifier, 'TicTacToe.html',TicTacToe">Resoures</li>                    
                     <li menu="haramain"  menuitems="'https://play.google.com/store/apps/details?id=com.naeemiqbal',My Haramain, 'mh/index.html', Web Prototype">Resources</li>
                     <li menu="favorites" menuitems="'audio/index.html',Audios,'audio/MeraDilBadalDai.mp4',Dil badal de">Favorites</li>
 
@@ -163,7 +180,7 @@
             </iframe>
             <div class="mainbody" id="main1">
                 finally{
-                <img src="NaeemIqbal.JPG"/>
+                <img id="myself" src="NaeemIqbal.JPG"/>
                 }
             </div>
         </section>

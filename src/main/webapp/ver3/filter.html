@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>TODO supply a title</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+
+        <script>
+            
+            $(document).ready(function(){
+                var a1=[1,2,3,4,5,6,7],
+                a2=[[1,2,7],[1,2,8],[1,2,3]],
+                a3, a4, a5, a6;
+                
+                a3 = a1.filter(itm => itm>3 );
+                a4 = a2.filter(row => row.length >2);
+                //a5 = a2.filter(row => row.childNodes.filter(cell => cell > 2 ));
+                a6 = a2.filter( function(row){
+                    let l = row.length;
+                     l = row.filter( function( cell){
+                        return cell > 3;
+                    });
+                    if  (l.length>0)
+                        return true;
+                    else return false;
+                });
+                $('div').append("items=" + a1);
+                $('div').append('filtered=' + a3);
+                
+                $('div').append("items=" + a2);
+                $('div').append('filtered=' + a4);
+                                $('div').append('filtered=' + a6);
+                
+                
+            });
+            </script>
+            
+    </head>
+    <body>
+        <div>TODO write content</div>
+    </body>
+</html>

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>SQL Beautifier</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script src="https://code.jquery.com/jquery-1.12.4.js"></script>        
+        <script>
+            const RWORDS = ['SELECT', 'FROM', 'WHERE', 'JOIN', 'INNER', 'OUTER', 'ON', 'AND', 'OR', 'BETWEEN', 'RIGHT', 'LEFT', 
+                'ORDER', 'BY ', 'GROUP', 'HAVING'];
+
+            $(document).ready(function () {
+                $("#format").click(formatSQL);
+            });
+
+            function formatSQL() {
+                let insql = $('#sqlin'),
+                        outsql = $('#sqlout'),
+                        sql = insql.val();
+                sql = sql.toLowerCase();
+                RWORDS.forEach(function (word) {
+                    let   re = new RegExp(word, "gi");
+                    sql = sql.replace(re, word)
+                });
+                outsql.text(sql);
+            }
+        </script>
+    </head>
+
+    <body>
+        <textarea rows="10" id="sqlin" cols="80" >select * from home where uid=25 and bytes < 1024 </textarea><br/>
+        <button id="format">Format</button> <br/>
+        <textarea rows="10" id="sqlout" cols="80" >  </textarea><br/>
+    </body>
+</html>
