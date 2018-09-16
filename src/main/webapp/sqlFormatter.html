@@ -11,29 +11,38 @@ and open the template in the editor.
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <script src="https://code.jquery.com/jquery-1.12.4.js"></script>        
         <script>
-            const RWORDS = ['SELECT', 'FROM', 'WHERE', 'JOIN', 'INNER', 'OUTER', 'ON', 'AND', 'OR', 'BETWEEN', 'RIGHT', 'LEFT', 
-                'ORDER', 'BY ', 'GROUP', 'HAVING'];
+            const RWORDS = ['SELECT', 'FROM', 'WHERE', 'JOIN', 'INNER', 'OUTER', 'ON', 'AND', 'OR', 'BETWEEN', 'RIGHT', 'LEFT','ORDER', 'BY ', 'GROUP', 'HAVING', 'INSERT', 'INTO', 'NOT', 'EXISTS', 'VALUES'];
 
             $(document).ready(function () {
                 $("#format").click(formatSQL);
             });
 
             function formatSQL() {
-                let insql = $('#sqlin'),
+                let sql = $('#sqlin').val(),
                         outsql = $('#sqlout'),
-                        sql = insql.val();
-                sql = sql.toLowerCase();
-                RWORDS.forEach(function (word) {
-                    let   re = new RegExp(word, "gi");
-                    sql = sql.replace(re, word)
+                        osql = "",
+                        arr;
+                sql = sql.replace("\"", "'");
+                arr = sql.split("'");
+                arr.forEach(function (a, i) {
+                    if (i % 2 === 0) {
+                        a = a.toLowerCase();
+                        RWORDS.forEach(function (word) {
+                            let   expr = word + "\\s+",
+                            re = new RegExp(expr, "gi");
+                            a = a.replace(re, word + " ");
+                        });
+                        osql += a;
+                    } else
+                        osql += "'" + a + "'";
                 });
-                outsql.text(sql);
+                outsql.text(osql);
             }
         </script>
     </head>
 
     <body>
-        <textarea rows="10" id="sqlin" cols="80" >select * from home where uid=25 and bytes < 1024 </textarea><br/>
+        <textarea rows="10" id="sqlin" cols="80" >select *, 'nmi123', 'nmifromNMI'  from home where uid = 'nmiNMI' and bytes < 1024 </textarea><br/>
         <button id="format">Format</button> <br/>
         <textarea rows="10" id="sqlout" cols="80" >  </textarea><br/>
     </body>

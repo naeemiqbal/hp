@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>JS Regex Finder</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script src="https://code.jquery.com/jquery-1.12.4.js"></script>        
+        <script>
+            $(document).ready(function () {
+                $("#format").click(formatSQL);
+            });
+
+            function formatSQL() {
+                let sql = $('#sqlin').val(),
+                        word = $("#rexpr").val(),
+                        outsql = $('#sqlout');
+                let   re = new RegExp(word, 'gi'),
+                        mtch = re.exec(sql);
+
+                var regex1 = RegExp(word, 'gi'), array1, str1 = sql, o = "";
+                while ((array1 = regex1.exec(str1)) !== null) {
+                    o += `\nFound ${array1[0]}. Next starts at ${regex1.lastIndex}.`;
+                }
+                outsql.text(mtch + "\n" + o);
+            }
+        </script>
+    </head>
+
+    <body>
+        <textarea rows="10" id="sqlin" cols="80" >select *, 'nmi123', 'nmifromNMI'  from home where uid = 'nmiNMI' and bytes < 1024 </textarea><br/>
+        <input  id="rexpr" value="from"/>
+        <button id="format">Find </button> <br/>
+        <textarea rows="10" id="sqlout" cols="80" >  </textarea><br/>
+    </body>
+</html>

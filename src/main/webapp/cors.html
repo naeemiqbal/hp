@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>CORS Ajax call</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+        <script>
+            $(document).ready(function () {
+                $("#ajaxb").click(ajaxCall);
+            });
+
+            function ajaxCall() {
+                var sts = $("#rstatus").val(), txt = $("#rtext").val();
+                $.ajax({
+                    url: "http://usgvnniqbal02.infor.com:7878/response?oResp=" + sts + "&oText=" + txt
+                })
+                        .done(function (resp, statusText) {
+                            $("#player").innerHTML = "<p>" + (resp + "  " + statusText);
+                            $("#resp").val(resp + " " + statusText);
+                        })
+                        .fail(function (resp, statusText) {
+                            $("#player").innerHTML = "<p>" + (resp.responseText + "  " + statusText);
+                            $("#resp").val(resp.responseText + " " + statusText);
+                        });
+            }
+            ;
+        </script>            
+    </head>
+    <body>
+        <div id="board" >
+            <button id="ajaxb" >do Ajax</button>
+            Status <input id="rstatus" value="200" />
+            Text<input id="rtext" value="NaeemIqbal"/>            
+            <div id="player">Response area</div>
+            Response<input id="resp" type="text" readonly="readlony"/>
+        </div>
+    </body>
+</html>

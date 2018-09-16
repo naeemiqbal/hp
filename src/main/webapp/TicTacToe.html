@@ -38,7 +38,7 @@ and open the template in the editor.
                 plr2 = $("input[name=player2]").val();
                 $("form").hide();
                 p1turn = true;
-                $("td").click(played);
+                $("table#grid td").click(played);
                 let  i;
                 board = [];
                 error = $("#error");
@@ -55,7 +55,7 @@ and open the template in the editor.
 
             function drawBoard() {
                 var brd = $("#board"), x, y, tbl, cid;
-                tbl = "<table class='grid'>";
+                tbl = "<table id='grid' class='grid'>";
                 for (y = 0; y < rows; y++) {
                     tbl += "<tr>"
                     for (x = 0; x < rows; x++) {
@@ -73,7 +73,12 @@ and open the template in the editor.
                 var h = window.innerHeight,
                         w = window.innerWidth,
                         least = h > w ? w : h,
+                        i = $('iframe'),
+                        ih = i.innerHeight,
+                        iw=i.innerWidth,
                         boxSize = least / rows;
+                if (i)
+                    lease =  ih > iw ? iw : ih;
                 if (boxSize < 100) {
                     let cls = $('.cell1'),
                             att = boxSize * .9 + "px";
