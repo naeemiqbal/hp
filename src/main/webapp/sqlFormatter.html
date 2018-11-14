@@ -11,39 +11,84 @@ and open the template in the editor.
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <script src="https://code.jquery.com/jquery-1.12.4.js"></script>        
         <script>
-            const RWORDS = ['SELECT', 'FROM', 'WHERE', 'JOIN', 'INNER', 'OUTER', 'ON', 'AND', 'OR', 'BETWEEN', 'RIGHT', 'LEFT','ORDER', 'BY ', 'GROUP', 'HAVING', 'INSERT', 'INTO', 'NOT', 'EXISTS', 'VALUES'];
+            const RWORDS = ['INNER', 'OUTER', 'ON', 'AND', 'OR', 'BETWEEN', 'RIGHT', 'LEFT', 'BY', 'INTO', 'NOT', 'EXISTS', 'VALUES[\(]*', 'CASE', 'END', 'WHEN', 'THEN', 'ELSE', 'set', 'in'];
+            const RWORDSNEWLINE = ['SELECT', 'FROM', 'WHERE', 'JOIN', 'ORDER', 'GROUP', 'HAVING', 'INSERT', 'UPDATE', 'DELETE', 'UNION'];
+            const QUOTE = "##quotes##"; //10
+            const reducer = (accumulator, currentValue) => accumulator + '\\b|\\b' + currentValue;
 
             $(document).ready(function () {
                 $("#format").click(formatSQL);
-            });
+                $("#upload-box").change(function () {
+                    var file = this.files[0];
 
+                    if (file) {
+                        var r = new FileReader(),
+                                txt;
+                        r.readAsText(file);
+                        txt = r.result;
+                        $("#sqlin").val(txt);
+                        r.onload = function (e) {
+                            $("#sqlin").val(e.target.result);
+                        };
+                    }
+                });
+                $("#paste").click(function () {
+                    var txt = "Wait...";
+                    navigator.clipboard.readText()
+                            .then(text => {
+                                $("#sqlin").val(text);
+                            })
+                            .catch(err => {
+                                console.log('Something went wrong', err);
+                            });
+                    $("#sqlin").val(txt);
+                })
+            });
             function formatSQL() {
                 let sql = $('#sqlin').val(),
                         outsql = $('#sqlout'),
                         osql = "",
-                        arr;
-                sql = sql.replace("\"", "'");
-                arr = sql.split("'");
-                arr.forEach(function (a, i) {
-                    if (i % 2 === 0) {
-                        a = a.toLowerCase();
-                        RWORDS.forEach(function (word) {
-                            let   expr = word + "\\s+",
-                            re = new RegExp(expr, "gi");
-                            a = a.replace(re, word + " ");
-                        });
-                        osql += a;
-                    } else
-                        osql += "'" + a + "'";
+                        arr, expr = '';
+                var regex = /'[\w\W]*?'/gi;
+                var match = regex.exec(sql);
+                while ((arr = regex.exec(sql)) !== null) {
+                    match.push(arr[0]);
+                }
+                osql = sql.replace(regex, QUOTE).toLowerCase();
+                expr = '\\b' + RWORDSNEWLINE.reduce(reducer) + '\\b';// "(?=\b)";                
+                regex = new RegExp(expr, 'gi');
+                osql = osql.replace(regex, function (v) {
+                    return "\n" + v.toUpperCase();
                 });
+                expr = '\\b' + RWORDS.reduce(reducer) + "\\b";
+                regex = new RegExp(expr, 'gi');
+                osql = osql.replace(regex, function (v) {
+                    return  v.toUpperCase();
+                });
+                regex = /QUOTE/gi;
+                let i = 0;
+                while (regex.exec(osql) !== null) {
+                    osql = osql.substr(0, regex.lastIndex - 7) + match[i++] + osql.substr(regex.lastIndex + 3);
+                }
+                osql = osql.replace(/^\s*[\r\n]/gm, ''); //                        /^\s*$/g, "");
                 outsql.text(osql);
+                outsql.select();
+                document.execCommand("copy");
             }
         </script>
     </head>
 
     <body>
-        <textarea rows="10" id="sqlin" cols="80" >select *, 'nmi123', 'nmifromNMI'  from home where uid = 'nmiNMI' and bytes < 1024 </textarea><br/>
-        <button id="format">Format</button> <br/>
-        <textarea rows="10" id="sqlout" cols="80" >  </textarea><br/>
+        <input id="upload-box" name="ifile" type="file" accept=".sql"/>
+        <button id="paste">Paste clipboard</button> <br/>
+        <textarea rows="10" id="sqlin" cols="80" >
+        insert into mytable(fld1, FLD2, flD3) 
+select 1, 2 ,'New Value 3' from mytable2 where fld1 ='AnyValue'
+        union 
+        select *, 'nmi123', 'nmifromNMI'  from home where uid = 'nmiNMI' and bytes < 1024
+union select isfromit into null
+        </textarea><br/>
+        <button id="format">Format</button> Also copies to clipboard <br/>
+        <textarea rows="20" id="sqlout" cols="80" >  </textarea><br/>
     </body>
 </html>
