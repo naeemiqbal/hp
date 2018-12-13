@@ -6,12 +6,43 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
         <script src="https://code.jquery.com/jquery-3.1.1.min.js"
                 integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
-                crossorigin="anonymous" ></script>
+        crossorigin="anonymous" ></script>
+
+        <script type="text/javascript">
+            var aloop = "All";
+            $(document).ready(function () {
+                $("audio").on("ended", startNext);
+                $("input").change(function () {
+                    aloop = this.value;
+                });
+            });
+
+            function startNext() {
+                var arr = $("audio"),
+                        curr = false, i, j = 0;
+                if (aloop === "None")
+                    return;
+                else if (aloop === "Single") {
+                    this.play();
+                    return;
+                }
+// Logic for all 
+                for (i = 0; i < arr.length; i++) {
+                    if (arr[i] == this) {
+                        j = i + 1;
+                        break;
+                    }
+                }
+                arr[j].play();
+            }
+
+
+        </script>
     </head>
     <body>
         <div>
-        <a href="http://quranicaudio.com/quran/58">Quran with Translations</a><br/>
-        <a href="http://www.meaningofquran.com/downloads/">Quran with Translations by Mufti Taqi Usmani [Requires login]</a><br/><br/><br/>
+            <a href="http://quranicaudio.com/quran/58">Quran with Translations</a><br/>
+            <a href="http://www.meaningofquran.com/downloads/">Quran with Translations by Mufti Taqi Usmani [Requires login]</a><br/><br/><br/>
         </div>
         <div>
             <table>
@@ -21,13 +52,18 @@
                 <tr><td>Mera dil badal</td><td><audio  src="03 - Mera dil badal de.mp3" controls="true"/></td></tr>
                 <tr><td>Ae Allah tu hi atta</td><td><audio  src="09 - Ae Allah tu hi atta.mp3" controls="true"/></td></tr>
                 <tr><td>Illahi La Tu Azzibni</td><td><audio  src="10 - Illahi La Tu Azzibni.mp3" controls="true"/></td></tr>
-                <tr><td>Jalwa-e-jaana</td><td><audio  src="10 - Jalwa-e-jaana.mp3" controls="true"/></td></tr>
-                
+                <tr><td>Jalwa-e-jaana</td><td><audio  src="10 - Jalwa-e-jaana.mp3" controls="true"  /></td></tr>
+
                 <tr><td>Badi uz Zaman</td><td><audio  src="badi-uz-zaman.MP3" controls="true"/></td></tr>
-                <tr><td>Ummati</td><td><audio  src="ummati.MP3" controls="true"/></td></tr>
+                <tr><td>Ummati</td><td><audio  src="ummati.MP3" controls="true" /></td></tr>
                 <tr><td>Faaslon ko takalluf</td><td><audio  src="faaslon~ko~takalluf.MP3" controls="true"/></td></tr>
-                
-                
+                <tr><td>Loop</td>
+                    <td>
+                        Single<input type="radio" name="jj" value="Single" />
+                        All<input type="radio" name="jj" value="All" checked="checked" />
+                        None<input type="radio" name="jj" value="None" />
+                    </td>
+                </tr>
             </table>
         </div>
     </body>

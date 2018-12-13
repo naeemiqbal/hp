@@ -11,8 +11,8 @@ and open the template in the editor.
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <script src="https://code.jquery.com/jquery-1.12.4.js"></script>        
         <script>
-            const RWORDS = ['INNER', 'OUTER', 'ON', 'AND', 'OR', 'BETWEEN', 'RIGHT', 'LEFT', 'BY', 'INTO', 'NOT', 'EXISTS', 'VALUES[\(]*', 'CASE', 'END', 'WHEN', 'THEN', 'ELSE', 'set', 'in'];
-            const RWORDSNEWLINE = ['SELECT', 'FROM', 'WHERE', 'JOIN', 'ORDER', 'GROUP', 'HAVING', 'INSERT', 'UPDATE', 'DELETE', 'UNION'];
+            const RWORDS = [ 'ON', 'AND','JOIN', 'OR', 'BETWEEN', 'RIGHT', 'LEFT', 'BY', 'INTO', 'NOT', 'EXISTS', 'VALUES[\(]*', 'CASE', 'END', 'WHEN', 'THEN', 'ELSE', 'set', 'in', 'LIKE'];
+            const RWORDSNEWLINE = ['SELECT', 'FROM', 'WHERE', 'INNER', 'OUTER', 'ORDER', 'GROUP', 'HAVING', 'INSERT', 'UPDATE', 'DELETE', 'UNION'];
             const QUOTE = "##quotes##"; //10
             const reducer = (accumulator, currentValue) => accumulator + '\\b|\\b' + currentValue;
 
@@ -42,8 +42,10 @@ and open the template in the editor.
                                 console.log('Something went wrong', err);
                             });
                     $("#sqlin").val(txt);
-                })
+                });
             });
+
+
             function formatSQL() {
                 let sql = $('#sqlin').val(),
                         outsql = $('#sqlout'),
